@@ -20,15 +20,18 @@ const HALF_LIFE_PERIOD = 5730;
 function dateSample(sampleActivity) {
   const MODERN_ACTIVITY = 15;
   const HALF_LIFE_PERIOD = 5730;
+  const LN2 = 0.693;
 
-  if (typeof sampleActivity !== 'string' || !parseFloat(sampleActivity) || parseFloat(sampleActivity) <= 0) {
+  if (typeof sampleActivity !== 'string' || !sampleActivity || isNaN(sampleActivity)) {
     return false;
   }
 
-  const activity = parseFloat(sampleActivity);
+  const activity = +sampleActivity;
+  if (activity <= 0 || activity > MODERN_ACTIVITY) {
+    return false;
+  }
 
-  const age = Math.ceil(Math.log(MODERN_ACTIVITY / activity) / (0.693 / HALF_LIFE_PERIOD));
-
+  const age = Math.ceil(Math.log(MODERN_ACTIVITY / activity) / (LN2 / HALF_LIFE_PERIOD));
   return age;
 }
 
