@@ -12,18 +12,25 @@ const { NotImplementedError } = require('../extensions/index.js');
  *
  */
 function getSeason(date) {
-  const winter = [11, 0, 1],
-    spring = [2, 3, 4],
-    summer = [5, 6, 7],
-    autoumn = [8, 9, 10];
-  const month = date.getMonth();
+  if (!date) {
+    return 'Unable to determine the time of year!';
+  }
 
-  if (!date) return 'Unable to determine the time of year!';
-  else if (winter.includes(month)) return 'winter';
-  else if (spring.includes(month)) return 'spring';
-  else if (summer.includes(month)) return 'summer';
-  else if (autoumn.includes(month)) return 'autoumn';
-  else throw new Error('Division by zero');
+  if (!(date instanceof Date) || isNaN(date)) {
+    throw new Error('Invalid date!');
+  }
+
+  const month = date.getMonth() + 1; // getMonth() возвращает месяцы от 0 до 11, поэтому добавляем 1
+
+  if (month >= 3 && month <= 5) {
+    return 'spring';
+  } else if (month >= 6 && month <= 8) {
+    return 'summer';
+  } else if (month >= 9 && month <= 11) {
+    return 'autumn';
+  } else {
+    return 'winter';
+  }
 }
 
 module.exports = {
